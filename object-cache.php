@@ -436,6 +436,9 @@ class WP_Object_Cache {
 		foreach ( $buckets as $bucket => $servers ) {
 			$this->mc[$bucket] = new Memcached();
 
+			if ( function_exists( 'wp_cache_memcached_init_options' ) )
+				wp_cache_memcached_init_options( $this->mc[ $bucket ] );
+
 			$instances = array();
 			foreach ( $servers as $server ) {
 				@list( $node, $port ) = explode( ':', $server );
