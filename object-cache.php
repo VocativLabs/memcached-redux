@@ -436,6 +436,10 @@ class WP_Object_Cache {
 		foreach ( $buckets as $bucket => $servers ) {
 			$this->mc[$bucket] = new Memcached();
 
+			if ( isset( Memcached::DYNAMIC_CLIENT_MODE ) ) {
+				$this->setOption( Memcached::OPT_CLIENT_MODE, Memcached::DYNAMIC_CLIENT_MODE );
+			}
+
 			$instances = array();
 			foreach ( $servers as $server ) {
 				@list( $node, $port ) = explode( ':', $server );
