@@ -434,10 +434,11 @@ class WP_Object_Cache {
 			$buckets = array( 'default' => $buckets );
 
 		foreach ( $buckets as $bucket => $servers ) {
-			$this->mc[$bucket] = new Memcached();
+			$mc = new Memcached();
+			$this->mc[$bucket] = $mc;
 
 			if ( isset( Memcached::DYNAMIC_CLIENT_MODE ) ) {
-				$this->setOption( Memcached::OPT_CLIENT_MODE, Memcached::DYNAMIC_CLIENT_MODE );
+				$mc->setOption( Memcached::OPT_CLIENT_MODE, Memcached::DYNAMIC_CLIENT_MODE );
 			}
 
 			$instances = array();
@@ -451,7 +452,7 @@ class WP_Object_Cache {
 
 				$instances[] = array( $node, $port, 1 );
 			}
-			$this->mc[$bucket]->addServers( $instances );
+			$mc->addServers( $instances );
 		}
 
 		global $blog_id, $table_prefix;
